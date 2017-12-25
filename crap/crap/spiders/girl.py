@@ -7,6 +7,7 @@ class GirlSpider(scrapy.Spider):
     name = "girl"
     allowed_domains = ['www.xiaohuar.com']
     start_urls = ['http://www.xiaohuar.com/p/suyan/']
+    split_str = '.'
 
     def parse(self, response):
         current_url = response.url  # 爬取时请求的url
@@ -22,10 +23,11 @@ class GirlSpider(scrapy.Spider):
         for item in response.css('div.item'):
             href = 'http://www.xiaohuar.com' + item.css('div.img a > img::attr(src)').extract_first()
             name = item.css('div.img a > img::attr(alt)').extract_first()
-            wget.download(href,name+'.jpg')
+            wget.download(href, name + self.split_str + href.split(self.split_str)[-1])
+
             yield {
-            'href':'http://www.xiaohuar.com' + item.css('div.img a > img::attr(src)').extract_first(),
-            'name':item.css('div.img a > img::attr(alt)').extract_first(),
+            'href':href,
+            'name':name,
             }
 
 

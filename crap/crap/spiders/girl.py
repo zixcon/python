@@ -3,6 +3,7 @@
 import scrapy
 import wget
 
+
 class GirlSpider(scrapy.Spider):
     name = "girl"
     allowed_domains = ['www.xiaohuar.com']
@@ -21,13 +22,16 @@ class GirlSpider(scrapy.Spider):
         #     }
 
         for item in response.css('div.item'):
-            href = 'http://www.xiaohuar.com' + item.css('div.img a > img::attr(src)').extract_first()
+            href = 'http://www.xiaohuar.com/p/suyan' + item.css('div.img a > img::attr(src)').extract_first()
             name = item.css('div.img a > img::attr(alt)').extract_first()
             wget.download(href, name + self.split_str + href.split(self.split_str)[-1])
 
             yield {
-            'href':href,
-            'name':name,
+                'href': href,
+                'name': name,
             }
-
-
+        #
+        # for page in [2,3,4,5,6,7]:
+        #     next_page = self.start_urls[0] + 'index_' + page + '.html'
+        #     if next_page is not None:
+        #         yield response.follow(next_page, callback=self.parse)

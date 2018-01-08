@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.selector import Selector
-from lxml import etree
+from ssq.items import SsqItem
 
 
 class BallSpider(scrapy.Spider):
@@ -10,6 +10,7 @@ class BallSpider(scrapy.Spider):
     start_urls = ['http://kaijiang.zhcw.com/zhcw/html/ssq/list_1.html']
 
     def parse(self, response):
+        items = []
         # print(response.body)
         sel = Selector(response=response)
         # tbody 取不到，可能因为是自定义标签缘故
@@ -22,12 +23,28 @@ class BallSpider(scrapy.Spider):
             # if arr:
             #     date = arr.pop(1).extract()
             #     print(date)
+
+            item = SsqItem()
             arr = elem.css("td::text").extract()
             if len(arr) > 2:
-                print(arr[1])
+                item['date'] = arr[1]
             em_arr = elem.css('em::text').extract()
-            if em_arr:
-                index = 0
-                for em in em_arr:
-                    print(em)
-                    index = index + 1
+            if len(em_arr) == 7:
+                item['red_ball_1'] = em_arr[0]
+                item['red_ball_2'] = em_arr[1]
+                item['red_ball_3'] = em_arr[2]
+                item['red_ball_4'] = em_arr[3]
+                item['red_ball_5'] = em_arr[4]
+                item['red_ball_6'] = em_arr[5]
+                item['blue_ball'] = em_arr[6]
+                # index = 0
+                # for em in em_arr:
+                #     print(em)
+                #     if index == 6:
+                #         item['blue_ball'] = em
+                #     else:
+                #         item_name = 'red_ball_' + str(index)
+                #         item[item_name] = em
+                #     index = index + 1
+            items.append(item)
+        return items

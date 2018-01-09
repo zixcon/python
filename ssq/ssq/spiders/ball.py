@@ -9,7 +9,14 @@ class BallSpider(scrapy.Spider):
     name = "ball"
     allowed_domains = ["kaijiang.zhcw.com"]
     start_urls = ['http://kaijiang.zhcw.com/zhcw/html/ssq/list_1.html']
+    domain = "http://kaijiang.zhcw.com"
 
+    # 页面编号组装url
+    def parse_url(self, pagenum):
+        url = 'http://kaijiang.zhcw.com/zhcw/html/ssq/list_' + str(pagenum) + '.html'
+        return url
+
+    # 匹配下一页链接地址，并组装真实页面编号地址
     def parse_next_pagenum(self, response):
         sel = Selector(response=response)
         next_pagenum = sel.re('<a href="/zhcw/inc/ssq/ssq_wqhg.jsp\\?pageNum=\d+">下一页</a>')
@@ -19,10 +26,15 @@ class BallSpider(scrapy.Spider):
         pagenum = page_href.split('=')[1]
         return pagenum
 
-    def parse_url(self, pagenum):
-        url = 'http://kaijiang.zhcw.com/zhcw/html/ssq/list_' + str(pagenum) + '.html'
-        return url
-    
+    # 匹配下一页链接地址返回
+    def parse_next_page(self, response):
+        sel = Selector(response=response)
+        next_pagenum = sel.re('<a href="/zhcw/inc/ssq/ssq_wqhg.jsp\\?pageNum=\d+">下一页</a>')
+        print(next_pagenum[0])
+        next_page = Selector(text=next_pagenum[0])
+        page_href = next_page.css('a::attr(href)').extract()[0]
+        return self.domain + page_href
+
     def parse(self, response):
         # print(response.body)
         sel = Selector(response=response)
@@ -61,5 +73,10 @@ class BallSpider(scrapy.Spider):
                 #         item[item_name] = em
                 #     index = index + 1
                 yield item
-        pagenum = self.parse_next_pagenum(response)
-        yield Request(self.parse_url(pagenum), callback=self.parse)
+
+        # 方法1：通过组装后的真实地址请求
+        # pagenum = self.parse_next_pagenum(response)
+        # yield Request(self.parse_url(pagenum), callback=self.parse)
+
+        # 方法2：通过下一页链接地址进行跳转
+        yield Request(self.parse_next_page(response), callback=self.parse)

@@ -12,6 +12,7 @@ class SsqItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     date = scrapy.Field()
+    period = scrapy.Field()
     red_ball_1 = scrapy.Field()
     red_ball_2 = scrapy.Field()
     red_ball_3 = scrapy.Field()

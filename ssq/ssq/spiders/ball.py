@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.selector import Selector
+from scrapy.spiders import Request
 from ssq.items import SsqItem
 
 
@@ -39,7 +40,8 @@ class BallSpider(scrapy.Spider):
             item = SsqItem()
             arr = elem.css("td::text").extract()
             if len(arr) > 2:
-                item['date'] = arr[1]
+                item['date'] = arr[0]
+                item['period'] = arr[1]
             em_arr = elem.css('em::text').extract()
             if len(em_arr) == 7:
                 item['red_ball_1'] = em_arr[0]

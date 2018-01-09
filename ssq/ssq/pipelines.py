@@ -17,7 +17,7 @@ class SsqPipeline(object):
 class JsonWriterPipeline(object):
     def open_spider(self, spider):
         # self.file = open('items.jl', 'w')
-        self.file = codecs.open('items.jl', 'w', encoding='utf-8')
+        self.file = codecs.open('ball_items.jl', 'w', encoding='utf-8')
 
     def close_spider(self, spider):
         self.file.close()

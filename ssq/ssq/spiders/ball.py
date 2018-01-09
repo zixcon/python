@@ -9,8 +9,20 @@ class BallSpider(scrapy.Spider):
     allowed_domains = ["kaijiang.zhcw.com"]
     start_urls = ['http://kaijiang.zhcw.com/zhcw/html/ssq/list_1.html']
 
+    def parse_next_pagenum(self, response):
+        sel = Selector(response=response)
+        next_pagenum = sel.re('<a href="/zhcw/inc/ssq/ssq_wqhg.jsp\\?pageNum=\d+">下一页</a>')
+        print(next_pagenum[0])
+        next_page = Selector(text=next_pagenum[0])
+        page_href = next_page.css('a::attr(href)').extract()[0]
+        pagenum = page_href.split('=')[1]
+        return pagenum
+
+    def parse_url(self, pagenum):
+        url = 'http://kaijiang.zhcw.com/zhcw/html/ssq/list_' + str(pagenum) + '.html'
+        return url
+    
     def parse(self, response):
-        items = []
         # print(response.body)
         sel = Selector(response=response)
         # tbody 取不到，可能因为是自定义标签缘故
@@ -46,5 +58,6 @@ class BallSpider(scrapy.Spider):
                 #         item_name = 'red_ball_' + str(index)
                 #         item[item_name] = em
                 #     index = index + 1
-            items.append(item)
-        return items
+                yield item
+        pagenum = self.parse_next_pagenum(response)
+        yield Request(self.parse_url(pagenum), callback=self.parse)

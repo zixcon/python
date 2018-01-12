@@ -23,13 +23,13 @@ print(Y)
 
 ts = pd.Series(X, index=Y)
 # ts = ts.cumsum()
-ts.plot()
+ts.plot(linewidth=0.05)
 plt.show()
 
 df = pd.DataFrame(X, index=Y, columns=list('A'))
 # df = df.cumsum()
 plt.figure()
-df.plot()
+df.plot(linewidth=0.05)
 plt.show()
 
 # ts = pd.Series(np.random.randn(1000), index=pd.date_range('1/1/2000', periods=1000))

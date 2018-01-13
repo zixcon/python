@@ -10,7 +10,8 @@ def readData():
 
 def getBall(data):
     origin = np.matrix(data)
-
+    rows, colums = data.shape[0], data.shape[1]
+    
     title = origin[0:1, 0:colums]
     ball_data = origin[1:rows, 0:colums]
 

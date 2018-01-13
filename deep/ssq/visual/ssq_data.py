@@ -1,24 +1,31 @@
-# 普通方法
-
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# filename可以直接从盘符开始，标明每一级的文件夹直到csv文件，header=None表示头部为空，sep=' '表示数据间使用空格作为分隔符，如果分隔符是逗号，只需换成 ‘，’即可。
-data = pd.read_csv('ball_items.csv', header=None, sep=',')
 
-# print(data)
-rows = data.shape[0]
-colums = data.shape[1]
+def readData():
+    data = pd.read_csv('../ball_items.csv', header=None, sep=',')
+    return data
 
-date = data.values[0:rows, 0:1]
-red_ball = data.values[0:rows, 2:8]
-blue_ball = data.values[0:rows, 8:9]
 
-date = date[1:]
-red_ball = red_ball[1:]
-blue_ball = blue_ball[1:]
-print(date)
-print(red_ball)
-print(blue_ball)
+def getBall(data):
+    origin = np.matrix(data)
 
-red = np.matrix(red_ball)
+    title = origin[0:1, 0:colums]
+    ball_data = origin[1:rows, 0:colums]
+
+    date = ball_data[:, 0:1]
+    red_ball = ball_data[:, 2:8]
+    red_ball = red_ball.astype(int)
+    blue_ball = ball_data[:, 8:9]
+    blue_ball = blue_ball.astype(int)
+    return title, date, red_ball, blue_ball
+
+
+def visual(data, index, linewidth):
+    df = pd.DataFrame(data, index=index)
+    plt.figure()
+    if linewidth is None:
+        linewidth = 0.1
+    df.plot(linewidth=linewidth)
+    plt.show()

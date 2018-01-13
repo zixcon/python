@@ -36,3 +36,4 @@ df = pd.DataFrame(red_ball, index=date, columns=list('123456'))
 plt.figure()
 df.plot(linewidth=0.05)
 plt.show()
+

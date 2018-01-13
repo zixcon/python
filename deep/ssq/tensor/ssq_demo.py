@@ -1,5 +1,6 @@
 import numpy as np
 import tensorflow as tf
+from deep.ssq.visual.ssq_shap_data import *
 
 # Model linear regression y = Wx + b
 x = tf.placeholder(tf.float32, [None, 1])

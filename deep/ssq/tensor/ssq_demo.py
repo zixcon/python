@@ -1,5 +1,5 @@
-import numpy as np
 import tensorflow as tf
+
 from deep.ssq.visual.ssq_shap_data import *
 
 # Model linear regression y = Wx + b
@@ -19,6 +19,7 @@ train_step = tf.train.GradientDescentOptimizer(0.0000001).minimize(cost)
 sess = tf.Session()
 init = tf.global_variables_initializer()
 sess.run(init)
+
 steps = 1000
 for i in range(steps):
     # Create fake data for y = W.x + b where W = 2, b = 0

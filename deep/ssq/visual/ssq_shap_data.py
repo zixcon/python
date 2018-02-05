@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from deep.ssq.visual import base
+
 # filename可以直接从盘符开始，标明每一级的文件夹直到csv文件，header=None表示头部为空，sep=' '表示数据间使用空格作为分隔符，如果分隔符是逗号，只需换成 ‘，’即可。
 data = pd.read_csv('../ball_items.csv', header=None, sep=',')
 
@@ -31,9 +33,9 @@ print(red_ball)
 print(blue_ball)
 
 show_title = title[:, 2:8]
+print(base.flat(show_title))
 # df = pd.DataFrame(red_ball, index=date, columns=(x for x in show_title))
 df = pd.DataFrame(red_ball, index=date, columns=list('123456'))
 plt.figure()
 df.plot(linewidth=0.05)
 plt.show()
-

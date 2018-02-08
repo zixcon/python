@@ -1,8 +1,8 @@
 # 参照：http://bluewhale.cc/2017-08-10/use-tensorflow-to-train-linear-regression-models-and-predict.html#codesyntax_14
 # 导入所需库文件
-import tensorflow as tf
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
 
 # 设置广告花费和点击量数据
 money = np.array([[109], [82], [99], [72], [87], [78], [86], [84], [94], [57]]).astype(np.float32)

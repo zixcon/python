@@ -6,7 +6,7 @@ from sklearn import linear_model
 
 #### 准备数据
 
-csv_reader = csv.reader(open('ball_items.csv', encoding='utf-8'))
+csv_reader = csv.reader(open('../ball_items.csv', encoding='utf-8'))
 
 
 def read_arr(arr, i):
